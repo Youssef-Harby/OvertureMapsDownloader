@@ -1,5 +1,9 @@
 .ipynb_checkpoints
 dist
 __pycache__
-examples/countries.geojson
+.geojson
 .DS_Store
+*.gpkg
+*.gpkg-shm
+*.gpkg-wal
+*.gpkg.trashinfo

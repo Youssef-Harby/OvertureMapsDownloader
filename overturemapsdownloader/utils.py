@@ -159,9 +159,3 @@ def detect_geometry_format(geometry_sample):
                 return "WKB"
             except:
                 return None
-
-
-# Example usage
-filepath = "map.geojson"  # Make sure this file exists in your path
-gdf = read_geospatial_data(filepath, as_shapely_str=True)
-print(gdf)

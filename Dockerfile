@@ -43,9 +43,10 @@ ENV POETRY_NO_INTERACTION=1 \
 WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./
+COPY README.md ./
+COPY overturemapsdownloader ./overturemapsdownloader
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --no-root
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-COPY overturemapsdownloader ./overturemapsdownloader

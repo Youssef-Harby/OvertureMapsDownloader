@@ -20,7 +20,6 @@ geopandas = "^0.13.2"
 shapely = "^2.0.1"
 gdal = "^3.7.1.1"
 fiona = "^1.9.4.post1"
-httpfs = "^0.0.1"
 
 [build-system]
 requires = ["poetry-core"]
