@@ -1,0 +1,5 @@
+.ipynb_checkpoints
+dist
+__pycache__
+examples/countries.geojson
+.DS_Store
