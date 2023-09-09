@@ -2,8 +2,10 @@ FROM ghcr.io/osgeo/gdal:ubuntu-full-3.7.1
 
 LABEL maintainer="Youssef Harby <me@youssefharby.com>"
 
-ENV DUCKDB_VERSION=0.8.1 \
+ARG OS_ARCH=linux \
     PLATFORM_ARCH=aarch64
+
+ENV DUCKDB_VERSION=0.8.1
 
 # Install dependencies
 RUN apt-get update && \
@@ -15,9 +17,9 @@ RUN apt-get update && \
     python3.10 -m pip install --upgrade pip
 
 # Install duckdb cli
-RUN wget https://github.com/duckdb/duckdb/releases/download/v${DUCKDB_VERSION}/duckdb_cli-linux-${PLATFORM_ARCH}.zip \
-    && unzip duckdb_cli-linux-${PLATFORM_ARCH}.zip -d /usr/local/bin \
-    && rm duckdb_cli-linux-${PLATFORM_ARCH}.zip
+RUN wget https://github.com/duckdb/duckdb/releases/download/v${DUCKDB_VERSION}/duckdb_cli-${OS_ARCH}-${PLATFORM_ARCH}.zip \
+    && unzip duckdb_cli-${OS_ARCH}-${PLATFORM_ARCH}.zip -d /usr/local/bin \
+    && rm duckdb_cli-${OS_ARCH}-${PLATFORM_ARCH}.zip
 
 # Download and install DuckDB extensions for multiple platforms and extension names
 # RUN for PLATFORM_NAME in linux_arm64_gcc4 linux_arm64; do \

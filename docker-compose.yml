@@ -5,6 +5,9 @@ services:
     container_name: OvertureMapsDownloader
     build: 
       context: .
+      args:
+        - OS_ARCH=linux
+        - PLATFORM_ARCH=aarch64 # amd64, i386, rpi, aarch64
     image: yharby/overture-maps-downloader:latest
     command: ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--NotebookApp.token=''", "--allow-root"]
     restart: unless-stopped
