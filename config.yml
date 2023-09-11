@@ -1,0 +1,30 @@
+global_variables:
+  release: "2023-07-26-alpha.0"
+  s3_region: "us-west-2"
+  default_theme: "admins"
+  default_type: "*"
+
+s3_credentials: # Optional
+  access_key: "YOUR_ACCESS_KEY"
+  secret_key: "YOUR_SECRET_KEY"
+  session_token: "YOUR_SESSION_TOKEN"
+
+urls:
+  Amazon_S3: "s3://overturemaps-us-west-2/release/{release}/theme={theme}/type={type}/*"
+  Microsoft_Azure: "https://overturemapswestus2.blob.core.windows.net/release/{release}/theme={theme}/type={type}/*"
+
+themes:
+  - name: "admins"
+    types:
+      - "locality"
+      - "administrativeBoundary"
+  - name: "buildings"
+    types:
+      - "building"
+  - name: "places"
+    types:
+      - "place"
+  - name: "transportation"
+    types:
+      - "connector"
+      - "segment"
