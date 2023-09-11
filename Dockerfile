@@ -1,4 +1,5 @@
-FROM ghcr.io/osgeo/gdal:ubuntu-full-3.7.1
+ARG GDAL_VERSION=3.7.1
+FROM ghcr.io/osgeo/gdal:ubuntu-full-${GDAL_VERSION}
 
 LABEL maintainer="Youssef Harby <me@youssefharby.com>"
 
