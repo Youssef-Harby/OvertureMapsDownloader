@@ -1,10 +1,8 @@
-# config.py
 import logging
 from pathlib import Path
-from overturemapsdownloader.yaml_helper import (
-    read_yaml_file,
-)
+from overturemapsdownloader.yaml_helper import read_yaml_file
 
+# Initialize logging
 logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] %(levelname)s: %(message)s",
@@ -15,28 +13,39 @@ logging.basicConfig(
 class Config:
     def __init__(self, config_dict):
         for key, value in config_dict.items():
-            if isinstance(value, dict):
+            if key == "themes":
+                self.themes = [Config(theme_dict) for theme_dict in value]
+            elif isinstance(value, dict):
                 setattr(self, key.lower(), Config(value))
             else:
                 setattr(self, key.lower(), value)
 
-    def set_final_url(self, url_name, final_url):
-        if hasattr(self.urls, url_name.lower()):
-            setattr(self.urls, url_name.lower(), final_url)
-
     def format_url(self, url_name, theme=None, type_=None):
         if hasattr(self.urls, url_name.lower()):
             url_template = getattr(self.urls, url_name.lower())
+            final_theme = theme if theme else self.global_variables.default_theme
+            final_type = type_
+
+            if theme and not type_:
+                for theme_item in self.themes:
+                    if theme_item.name.lower() == final_theme.lower():
+                        final_type = theme_item.types[0] if theme_item.types else None
+                        break
+
+            final_type = (
+                final_type if final_type else self.global_variables.default_type
+            )
+
             return url_template.format(
                 release=self.global_variables.release,
-                theme=theme if theme else self.global_variables.default_theme,
-                type=type_ if type_ else self.global_variables.default_type,
+                theme=final_theme,
+                type=final_type,
             )
         else:
             return None
 
 
-def load_config(yaml_file=None, final_urls=None, **kwargs):
+def load_config(yaml_file=None, **kwargs):
     if yaml_file is None:
         default_path = Path(__file__).parent.parent / "config.yml"
         if default_path.exists():
@@ -55,18 +64,7 @@ def load_config(yaml_file=None, final_urls=None, **kwargs):
         logging.error("Configuration not loaded due to an error in the YAML file.")
         return None
 
-    if kwargs:
-        for key, value in kwargs.items():
-            if key in config_data:
-                config_data[key].update(value)
-            else:
-                config_data[key] = value
-
     config = Config(config_data)
-
-    if final_urls:
-        for url_name, final_url in final_urls.items():
-            config.set_final_url(url_name, final_url)
 
     return config
 
@@ -78,24 +76,5 @@ if __name__ == "__main__":
         logging.warning("Configuration not loaded.")
         exit(1)
 
-    # Using the S3 credentials (add your own logic here)
-    if hasattr(config, "s3_credentials"):
-        logging.info(f"S3 Access Key: {config.s3_credentials.access_key}")
-        logging.info(f"S3 Secret Key: {config.s3_credentials.secret_key}")
-
     logging.info(config.format_url("Amazon_S3"))
-    logging.info(config.format_url("Microsoft_Azure", theme="places", type_="place"))
-
-    # Example using keyword arguments and setting a final URL
-    config2 = load_config(
-        global_variables={
-            "release": "2023",
-            "s3_region": "us-west-1",
-            "default_theme": "admins",
-            "default_type": "*/*",
-        },
-        final_urls={
-            "Amazon_S3": "s3://overturemaps-us-west-2/beta/{release}/theme={theme}/type={type}"
-        },
-    )
-    logging.info(config2.format_url("Amazon_S3"))
+    logging.info(config.format_url("Microsoft_Azure", theme="places"))
