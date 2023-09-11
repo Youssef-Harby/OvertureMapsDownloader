@@ -1,0 +1,3 @@
+[submodule "overturemapsdownloader/schemas"]
+	path = overturemapsdownloader/schemas
+	url = https://github.com/OvertureMaps/schema
