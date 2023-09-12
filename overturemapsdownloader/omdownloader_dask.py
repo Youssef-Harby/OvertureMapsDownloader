@@ -2,8 +2,10 @@ import logging
 import dask.dataframe as dd
 import geopandas as gpd
 import dask_geopandas as dgpd
+from overturemapsdownloader.utils_helper import read_geospatial_data
+from dask.diagnostics import ProgressBar
 
-from overturemapsdownloader.utils import read_geospatial_data
+ProgressBar().register()
 
 
 def get_df_from_parquet(
