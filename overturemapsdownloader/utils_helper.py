@@ -4,7 +4,6 @@ from pathlib import Path
 import fiona
 from shapely import wkt, wkb
 from shapely.geometry import Polygon
-import warnings
 import logging
 
 # Configure logging
@@ -88,7 +87,7 @@ def read_geospatial_data(
             gdf = gpd.read_file(filepath, driver=driver_map[file_type])
 
         # Filter by geometry type
-        gdf = gdf[gdf["geometry"].apply(lambda geom: geom.type in geometry_types)]
+        gdf = gdf[gdf["geometry"].apply(lambda geom: geom.geom_type in geometry_types)]
 
         if as_shapely_str:
             first_geom = gdf.loc[0, "geometry"]
