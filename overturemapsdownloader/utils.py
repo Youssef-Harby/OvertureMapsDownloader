@@ -3,6 +3,12 @@ import pandas as pd
 from pathlib import Path
 import fiona
 from shapely import wkt, wkb
+from shapely.geometry import Polygon
+import warnings
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 
 def detect_file_type(filepath: str):
@@ -24,6 +30,12 @@ def detect_file_type(filepath: str):
 
 
 def remove_extension(full_path):
+    """
+    Removes the file extension from a given path.
+
+    :param full_path: The full path to the file.
+    :return: The file path without the extension.
+    """
     path = Path(full_path)
     return str(path.with_suffix(""))
 
@@ -33,10 +45,10 @@ def read_geospatial_data(
     table_name=None,
     as_shapely_str=False,
     geometry_types=["Polygon", "MultiPolygon"],
+    output_format="WKT",
 ):
     """
-    Reads a geospatial data file (GeoJSON, GeoPackage, Shapefile, or File Geodatabase)
-    and returns it as a GeoDataFrame or with geometries as Shapely strings.
+    Reads a geospatial data file and returns it as a GeoDataFrame or with geometries as Shapely strings.
 
     :param filepath: The path to the geospatial data file.
     :param table_name: The name of the table or layer to load (for GeoPackage or File Geodatabase).
@@ -79,21 +91,31 @@ def read_geospatial_data(
         gdf = gdf[gdf["geometry"].apply(lambda geom: geom.type in geometry_types)]
 
         if as_shapely_str:
-            gdf["geometry"] = gdf["geometry"].apply(lambda geom: str(geom))
-            if not gdf.empty:  # Check if the DataFrame is not empty
-                gdf = str(gdf.loc[0, "geometry"])
-        else:
-            print("No Polygon or MultiPolygon geometries found.")
-
+            first_geom = gdf.loc[0, "geometry"]
+            if first_geom.geom_type in geometry_types:
+                if output_format == "WKT":
+                    return str(first_geom)
+                elif output_format == "Custom":
+                    if isinstance(first_geom, Polygon):
+                        return first_geom
+                    else:
+                        logging.info(
+                            f"The geometry is not a Polygon, it's a {first_geom.geom_type}"
+                        )
+                        return None
+                else:
+                    raise ValueError(
+                        "Invalid output_format. Choose from 'WKT' or 'Custom'."
+                    )
         return gdf
 
     except Exception as e:
-        print(f"An error occurred while reading the file: {e}")
+        logging.error(f"An error occurred while reading the file: {e}")
 
 
 def write_geospatial_data(gdf, filepath, driver=None, layer=None, encoding="utf-8"):
     """
-    Writes a GeoDataFrame to a geospatial data file (GeoJSON, GeoPackage, Shapefile, or File Geodatabase).
+    Writes a GeoDataFrame to a geospatial data file.
 
     :param gdf: The GeoDataFrame to write.
     :param filepath: The path to the file to write.
@@ -140,11 +162,17 @@ def write_geospatial_data(gdf, filepath, driver=None, layer=None, encoding="utf-
         else:
             gdf.to_file(newfilepath, driver=driver_map[driver], encoding=encoding)
     except Exception as e:
-        print(f"An error occurred while writing the file: {e}")
+        logging.error(f"An error occurred while writing the file: {e}")
     return newfilepath
 
 
 def detect_geometry_format(geometry_sample):
+    """
+    Detect the format of the geometry (WKT or WKB).
+
+    :param geometry_sample: A sample geometry to detect.
+    :return: A string representing the geometry format ('WKT' or 'WKB').
+    """
     if isinstance(geometry_sample, str):
         return "WKT"
     elif isinstance(geometry_sample, bytes):
