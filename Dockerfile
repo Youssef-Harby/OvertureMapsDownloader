@@ -45,7 +45,7 @@ ENV POETRY_NO_INTERACTION=1 \
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock config.yml ./
 COPY README.md ./
 COPY overturemapsdownloader ./overturemapsdownloader
 

@@ -1,0 +1,45 @@
+name: Publish Python Package
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/osgeo/gdal:ubuntu-full-3.7.1
+
+    env:
+      POETRY_NO_INTERACTION: 1
+      POETRY_VIRTUALENVS_IN_PROJECT: 1
+      POETRY_VIRTUALENVS_CREATE: 1
+      POETRY_CACHE_DIR: /tmp/poetry_cache
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        run: |
+          apt-get update
+          apt-get install -y python3-pip python3-dev
+          python -m pip install --upgrade pip
+
+      - name: Install Poetry
+        run: |
+          echo "Installing dependencies 🕵🏻‍♂️"
+          pip install poetry==1.4.2
+
+      - name: Building the package
+        run: |
+          echo "Building the package 📦"
+          poetry build
+
+      - name: Publishing to PyPI
+        run: |
+          echo "Configuring PyPI 🐍"
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          echo "Publishing to PyPI 🔥"
+          poetry publish --build --verbose
