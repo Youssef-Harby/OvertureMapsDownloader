@@ -32,14 +32,14 @@ jobs:
           echo "Installing dependencies 🕵🏻‍♂️"
           pip install poetry==1.4.2
 
-      - name: Building the package
-        run: |
-          echo "Building the package 📦"
-          poetry build
-
-      - name: Publishing to PyPI
+      - name: Configuring PyPI
         run: |
           echo "Configuring PyPI 🐍"
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          ldconfig
+      - name: Building and Publishing to PyPI
+        run: |
+          echo "Building the package 📦"
+          poetry build
           echo "Publishing to PyPI 🔥"
-          poetry publish --build --verbose
+          poetry publish

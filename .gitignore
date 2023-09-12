@@ -11,3 +11,4 @@ __pycache__
 *.db.wal
 *.db
 *.parquet
+.env
