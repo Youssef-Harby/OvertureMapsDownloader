@@ -25,16 +25,10 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Determine Docker Tag
-        run: echo "DOCKER_TAG=$(if [ "${{ github.ref }}" = "refs/heads/main" ]; then echo 'latest'; else echo ${GITHUB_REF#refs/tags/}; fi)" >> $GITHUB_ENV
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/overture-maps-downloader:${{ env.DOCKER_TAG }}
+      - name: Build and push to ghcr.io
+        run: |
+          docker buildx build --platform=linux/amd64,linux/arm64 --progress=plain --push --tag ghcr.io/youssef-harby/overturemapsdownloader:latest .
