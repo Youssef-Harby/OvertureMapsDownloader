@@ -31,7 +31,7 @@ jobs:
 
       - name: Build and push to ghcr.io
         run: |
+          docker buildx create --use
           echo "${{ github.actor }} 🔥🔥🔥"
-          echo "${{ secrets.GITHUB_TOKEN }} 🔥🔥🔥🔥"
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
           docker --debug buildx build --platform=linux/amd64,linux/arm64 --progress=plain --push --tag ghcr.io/youssef-harby/overturemapsdownloader:latest .
