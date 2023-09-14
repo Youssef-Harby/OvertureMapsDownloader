@@ -42,7 +42,9 @@ jobs:
       - name: Extract tag name if exists
         run: |
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+            DOCKER_TAG=$(echo ${GITHUB_REF#refs/tags/})
+            echo "DOCKER_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
+            echo "Current Tag inside if: ${DOCKER_TAG}"
           fi
           echo Current Tag is :  ${{ env.DOCKER_TAG }} 🐳
 
@@ -52,7 +54,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/youssef-harby/overturemapsdownloader:${{ env.DOCKER_TAG }}
+          tags: ghcr.io/youssef-harby/overturemapsdownloader:${{ github.ref == 'refs/heads/main' && 'latest' || github.ref_name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
