@@ -4,15 +4,7 @@ import logging
 from pathlib import Path
 from overturemapsdownloader.om_logic import om_dask_to_parquet
 from overturemapsdownloader.config import load_config
-
-warnings.simplefilter(action="ignore", category=FutureWarning)
-
-# Setup logging configuration
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] %(levelname)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
+from rich import print
 
 
 def callback():
@@ -42,7 +34,7 @@ def omaps(
         config.update_attribute("global_variables", {"default_type": ptype})
         logging.info(f"Parquet Type: {config.global_variables.default_type}")
     if bbox:
-        config.update_attribute("global_variables", {"filter_by_bbox": "True"})
+        config.update_attribute("global_variables", {"filter_by_bbox": True})
         config.update_attribute("global_variables", {"bbox_file_path": str(bbox)})
         logging.info(f"Bounding Box File: {config.global_variables.bbox_file_path}")
     if output:
@@ -55,7 +47,7 @@ def omaps(
     azure_url = config.format_url("Microsoft_Azure", theme=theme, ptype=ptype)
     logging.info(f"Microsoft Azure URL: {azure_url}")
 
-    # om_dask_to_parquet()
+    om_dask_to_parquet(config)
 
 
 if __name__ == "__main__":

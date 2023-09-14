@@ -6,9 +6,6 @@ from shapely import wkt, wkb
 from shapely.geometry import Polygon
 import logging
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-
 
 def detect_file_type(filepath: str):
     """

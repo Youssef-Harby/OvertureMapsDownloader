@@ -38,7 +38,6 @@ def make_gdf_from_df(df, crs=4326):
     """
     Converts a Dask DataFrame to a Dask GeoDataFrame.
     """
-    # TODO: Make CRS configurable later (config.yml)
     geometry = (
         df["geometry"]
         .map_partitions(gpd.GeoSeries.from_wkb, meta=gpd.GeoSeries(name="geometry"))
