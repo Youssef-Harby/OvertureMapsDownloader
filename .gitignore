@@ -12,3 +12,4 @@ __pycache__
 *.db
 *.parquet
 .env
+node_modules/
