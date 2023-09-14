@@ -99,8 +99,6 @@ If you prefer to use Jupyter notebooks for your geospatial data manipulation tas
    git clone https://github.com/Youssef-Harby/OvertureMapsDownloader.git
    ```
 
-````
-
 2. Navigate to the repository folder:
 
    ```bash
@@ -118,4 +116,3 @@ This will start a Jupyter notebook server accessible at http://localhost:8888/la
 ## Configuration
 
 For advanced configurations, please refer to the `config.yml` file.
-````

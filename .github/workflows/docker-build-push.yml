@@ -44,7 +44,7 @@ jobs:
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           fi
-          echo ${{ env.DOCKER_TAG }}} 🐳
+          echo Current Tag is :  ${{ env.DOCKER_TAG }} 🐳
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
