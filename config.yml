@@ -1,13 +1,14 @@
 global_variables:
   release: "2023-07-26-alpha.0"
   s3_region: "us-west-2"
-  default_theme: "admins"
+  default_theme: "places"
   default_type: "*"
-  filter_by_bbox: false
+  filter_by_bbox: true
   filter_by_country: false
   bbox_file_path: "examples/bbox.geojson"
   country_iso_code: "EG"
-  output_file_path: "examples/output.gpkg"
+  output_file_path: "examples/output.parquet"
+  default_epsg: 4326
 
 s3_credentials: # Optional
   access_key: "YOUR_ACCESS_KEY"
