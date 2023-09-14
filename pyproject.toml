@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "overturemapsdownloader"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Youssef-Harby <me@youssefharby.com>"]
 readme = "README.md"
