@@ -15,6 +15,9 @@ FROM
 LIMIT 
     2;
   `);
+  const [queryTime, setQueryTime] = useState(null);
+  const [conversionTime, setConversionTime] = useState(null);
+
 
   const [shouldExecute, setShouldExecute] = useState(false);
   const [result, setResult] = useState(null);
@@ -37,12 +40,20 @@ LIMIT
         >
           <div className="flex flex-col h-full">
             <AceEditorComponent initialCode={code} onCodeChange={handleCodeChange} />
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 my-4 rounded"
-              onClick={handleExecuteClick}
-            >
-              Run Query
-            </button>
+            <div className="flex items-center space-x-4 mx-4 my-4">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleExecuteClick}
+              >
+                Run Query
+              </button>
+              <div className='text-green-500'>
+                <p>Query Time (parquet): {queryTime ? `${queryTime.toFixed(2)} ms` : 'N/A'}</p>
+                <p>Conversion Time (GeoJSON): {conversionTime ? `${conversionTime.toFixed(2)} ms` : 'N/A'}</p>
+              </div>
+            </div>
+
+
             {error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : (
@@ -50,7 +61,16 @@ LIMIT
             )}
           </div>
           <div className="h-full max-w-full w-full">
-            <DuckDBComponent sqlCode={code} shouldExecute={shouldExecute} setShouldExecute={setShouldExecute} setResult={setResult} setError={setError} />
+            <DuckDBComponent
+              sqlCode={code}
+              shouldExecute={shouldExecute}
+              setShouldExecute={setShouldExecute}
+              setResult={setResult}
+              setError={setError}
+              setQueryTime={setQueryTime}
+              setConversionTime={setConversionTime}
+            />
+
             <MapComponentsProvider>
               <MapComponent result={result} error={error} />
             </MapComponentsProvider>
