@@ -1,5 +1,6 @@
 .ipynb_checkpoints
 __pycache__
+dist/
 .geojson
 .DS_Store
 *.gpkg
