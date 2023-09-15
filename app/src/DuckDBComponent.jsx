@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { initDatabase } from '../services/duckdb';
 import { convertWkbArrayToGeoJson } from '../services/wkbToGeoJsonService';
-import { MapComponentsProvider } from '@mapcomponents/react-maplibre';
-import MapComponent from './MapComponent';
 
-const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute }) => {
-    const [result, setResult] = useState(null);
-    const [error, setError] = useState(null);
-
+const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute, setResult, setError }) => {
     useEffect(() => {
         if (!shouldExecute) return;
 
@@ -21,6 +16,7 @@ const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute }) => {
                 const geoJsonData = convertWkbArrayToGeoJson(JSON.parse(data));
 
                 setResult(geoJsonData);
+                setError(null);  // Clear any previous errors
             } catch (e) {
                 setError(e.toString());
             } finally {
@@ -32,20 +28,10 @@ const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute }) => {
         };
 
         fetchData();
-    }, [sqlCode, shouldExecute, setShouldExecute]);
+    }, [sqlCode, shouldExecute, setShouldExecute, setResult, setError]);
 
-    return (
-        <div>
-            {error ? (
-                <p className="text-red-500">Error: {error}</p>
-            ) : (
-                <p className="font-bold underline">Result: {JSON.stringify(result, null, 2)}</p>
-            )}
-            <MapComponentsProvider>
-                <MapComponent result={result} error={error} />
-            </MapComponentsProvider>
-        </div>
-    );
+    return null;  // No need to return anything here
 };
 
 export default DuckDBComponent;
+

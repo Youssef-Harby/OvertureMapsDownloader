@@ -5,7 +5,7 @@ import 'ace-builds/src-noconflict/mode-mysql';
 import 'ace-builds/src-noconflict/theme-terminal';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-const AceEditorComponent = ({ initialCode, onCodeChange }) => {
+const AceEditorComponent = ({ initialCode, onCodeChange, readOnly, mode }) => {
     const handleChange = (newCode) => {
         if (onCodeChange) {
             onCodeChange(newCode);
@@ -21,7 +21,8 @@ const AceEditorComponent = ({ initialCode, onCodeChange }) => {
             <AceEditor
                 className="w-full"
                 placeholder="DuckDB Editor"
-                mode="mysql"
+                mode={mode || 'mysql'}
+                readOnly={readOnly || false}
                 theme="terminal"
                 name="blah2"
                 onLoad={handleLoad}
@@ -38,7 +39,7 @@ const AceEditorComponent = ({ initialCode, onCodeChange }) => {
                     showLineNumbers: true,
                     tabSize: 2,
                 }}
-                style={{ width: '100%' }}
+                style={{ width: '100%', height: '42vh' }}
             />
         </div>
     );
