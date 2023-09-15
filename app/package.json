@@ -1,7 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "homepage": "http://youssef-harby.github.io/OvertureMapsDownloader",
+  "homepage": "http://youssef-harby.github.io/OvertureMapsDownloader/app/dist",
   "version": "0.1.2",
   "type": "module",
   "scripts": {
