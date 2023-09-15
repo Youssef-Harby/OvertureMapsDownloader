@@ -1,7 +1,7 @@
 {
   "name": "app",
   "private": true,
-  "homepage": "http://youssef-harby.github.io/OvertureMapsDownloader/app/dist",
+  "homepage": "http://youssef-harby.github.io/OvertureMapsDownloader",
   "version": "0.1.2",
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages --dist 'app' -d build"
   },
   "dependencies": {
     "@devbookhq/splitter": "^1.4.2",
