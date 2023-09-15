@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { initDatabase } from '../services/duckdb';
+import { convertWkbArrayToGeoJson } from '../services/wkbToGeoJsonService';
+import { MapComponentsProvider } from '@mapcomponents/react-maplibre';
+import MapComponent from './MapComponent';
 
 const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute }) => {
     const [result, setResult] = useState(null);
@@ -15,11 +18,10 @@ const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute }) => {
                 ({ conn, db, worker } = await initDatabase(':memory:'));
 
                 const data = await conn.query(sqlCode);
+                const geoJsonData = convertWkbArrayToGeoJson(JSON.parse(data));
 
-                console.log(data);
-                setResult(data);
+                setResult(geoJsonData);
             } catch (e) {
-                console.error('An error occurred:', e);
                 setError(e.toString());
             } finally {
                 if (conn) await conn.close();
@@ -33,12 +35,15 @@ const DuckDBComponent = ({ sqlCode, shouldExecute, setShouldExecute }) => {
     }, [sqlCode, shouldExecute, setShouldExecute]);
 
     return (
-        <div className="flex flex-col items-center">
+        <div>
             {error ? (
                 <p className="text-red-500">Error: {error}</p>
             ) : (
-                <p className="text-3xl font-bold underline">Result: {result}</p>
+                <p className="font-bold underline">Result: {JSON.stringify(result, null, 2)}</p>
             )}
+            <MapComponentsProvider>
+                <MapComponent result={result} error={error} />
+            </MapComponentsProvider>
         </div>
     );
 };

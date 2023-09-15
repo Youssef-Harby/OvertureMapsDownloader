@@ -17,7 +17,7 @@ const AceEditorComponent = ({ initialCode, onCodeChange }) => {
     };
 
     return (
-        <div className="rounded-lg shadow-lg p-4 bg-white w-full">
+        <div className="rounded-lg shadow-lg p-4 bg-white">
             <AceEditor
                 className="w-full"
                 placeholder="DuckDB Editor"

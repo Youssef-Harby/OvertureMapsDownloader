@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mapContainer .maplibregl-canvas-container {
+    position: relative;
+    min-height: 100vh;
+    min-width: 100%;
+}

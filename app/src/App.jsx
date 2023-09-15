@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DuckDBComponent from './DuckDBComponent';
 import AceEditorComponent from './AceEditorComponent';
+import Splitter, { SplitDirection } from '@devbookhq/splitter';
 
 function App() {
   const [code, setCode] = useState(`
 SELECT 
-    id
+    id,
+    geometry
 FROM 
     'https://data.source.coop/cholmes/overture/places-geoparquet-country/AD.parquet'
 LIMIT 
     2;
   `);
+
   const [shouldExecute, setShouldExecute] = useState(false);
 
   const handleCodeChange = (newCode) => {
@@ -22,21 +25,23 @@ LIMIT
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="text-4xl font-bold mb-4">DuckDB Editor</div>
-      <div className="w-full max-w-2xl mb-8">
+    <Splitter
+      direction={SplitDirection.Horizontal}
+      gutterClassName="!h-[unset] w-2 bg-gray-200 border-none min-h-screen"
+    >
+      <div className="">
         <AceEditorComponent initialCode={code} onCodeChange={handleCodeChange} />
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 my-4 rounded"
+          onClick={handleExecuteClick}
+        >
+          Run Query
+        </button>
       </div>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={handleExecuteClick}
-      >
-        Run Query
-      </button>
-      <div className="w-full max-w-2xl">
+      <div className="h-full max-w-full w-full">
         <DuckDBComponent sqlCode={code} shouldExecute={shouldExecute} setShouldExecute={setShouldExecute} />
       </div>
-    </div>
+    </Splitter>
   );
 }
 
