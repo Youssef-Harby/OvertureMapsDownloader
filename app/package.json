@@ -8,9 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "git subtree push --prefix app/dist origin gh-pages"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@devbookhq/splitter": "^1.4.2",

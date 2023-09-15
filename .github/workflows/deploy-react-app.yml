@@ -1,0 +1,37 @@
+# .github/workflows/deploy-react-app.yml
+
+name: Build and Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: "18"
+      - name: Navigate to app directory
+        run: cd app
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./app
+
+      - name: Build React app
+        run: npm run build
+        working-directory: ./app
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./app/dist # The directory where your build outputs are stored
