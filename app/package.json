@@ -10,7 +10,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages --dist 'app' -d build"
+    "deploy": "git subtree push --prefix app/dist origin gh-pages"
   },
   "dependencies": {
     "@devbookhq/splitter": "^1.4.2",
