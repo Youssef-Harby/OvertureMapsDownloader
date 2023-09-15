@@ -1,22 +1,52 @@
-import { MapLibreMap } from '@mapcomponents/react-maplibre';
+import { MapLibreMap, useMap } from '@mapcomponents/react-maplibre';
 import { MlGeoJsonLayer } from "@mapcomponents/react-maplibre";
-import { useEffect } from 'react';
+import { useEffect, forwardRef, useImperativeHandle } from 'react';
 
-const MapComponent = ({ result, error }) => {
+const MapComponent = forwardRef(({ result, error }, ref) => {
     const mapOptions = {
-        zoom: 4,
+        zoom: 5,
         style: "https://wms.wheregroup.com/tileserver/style/osm-bright.json",
-        center: [7.0851268, 50.73884]
+        center: [31.0, 31.0]
     };
 
+    const mapHook = useMap({ mapId: "map_1" });
+
+    useImperativeHandle(ref, () => ({
+        resize: () => {
+            mapHook.map?.resize();
+        }
+    }));
+
     useEffect(() => {
-        console.log("Result from MapComponent.jsx is : ", result);
-        console.log("Error from MapComponent.jsx is : ", error);
-    }, [result, error]);
+        if (mapHook.map) {
+            mapHook.map.on('load', function () {
+                // Trigger a resize event
+                mapHook.map.resize();
+            });
+        }
+    }, [mapHook.map]);
+
+    useEffect(() => {
+        if (result && result.features && result.features.length > 0) {
+            const firstFeature = result.features[0];
+            const coordinatesObj = firstFeature.geometry.coordinates;
+
+            // Convert the coordinates object to an array
+            const coordinates = [coordinatesObj["0"], coordinatesObj["1"]];
+
+            // Delay the flyTo operation
+            setTimeout(() => {
+                mapHook.map?.flyTo({
+                    center: coordinates,
+                    zoom: 10,
+                });
+            }, 500); // 500 milliseconds delay
+        }
+    }, [result, error, mapHook.map]);
 
     return (
         <>
-            <MapLibreMap style={{ width: "100%" }} options={mapOptions} mapId="map_1" />
+            <MapLibreMap options={mapOptions} mapId="map_1" />
             {result && (
                 <MlGeoJsonLayer
                     geojson={result}
@@ -25,6 +55,8 @@ const MapComponent = ({ result, error }) => {
             )}
         </>
     );
-};
+});
+
+MapComponent.displayName = 'MapComponent';
 
 export default MapComponent;

@@ -14,6 +14,9 @@ export const convertWkbArrayToGeoJson = (wkbArray) => {
         // Extract the positions (coordinates) from the parsed data
         const positions = parsedData.positions.value;
 
+        // Delete the geometry field from the item object
+        delete item.geometry;
+
         // Create the GeoJSON geometry object
         const geoJsonGeometry = {
             type: 'Point', // Replace with the actual geometry type
@@ -22,7 +25,7 @@ export const convertWkbArrayToGeoJson = (wkbArray) => {
 
         // Create the properties object
         const properties = {
-            id: item.id,
+            ...item
             // any other key-value pairs you want to add to the properties
         };
 

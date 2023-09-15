@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import DuckDBComponent from './DuckDBComponent';
 import AceEditorComponent from './AceEditorComponent';
 import Splitter, { SplitDirection } from '@devbookhq/splitter';
@@ -17,11 +17,11 @@ LIMIT
   `);
   const [queryTime, setQueryTime] = useState(null);
   const [conversionTime, setConversionTime] = useState(null);
-
-
   const [shouldExecute, setShouldExecute] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+
+  const mapRef = useRef(null);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -31,12 +31,17 @@ LIMIT
     setShouldExecute(true);
   };
 
+  const handleResizeFinished = () => {
+    mapRef.current?.resize();
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow overflow-y-auto">
         <Splitter
           direction={SplitDirection.Horizontal}
           gutterClassName="!h-[unset] w-2 bg-gray-200 border-none min-h-screen"
+          onResizeFinished={handleResizeFinished}
         >
           <div className="flex flex-col h-full">
             <AceEditorComponent initialCode={code} onCodeChange={handleCodeChange} />
@@ -52,8 +57,6 @@ LIMIT
                 <p>Conversion Time (GeoJSON): {conversionTime ? `${conversionTime.toFixed(2)} ms` : 'N/A'}</p>
               </div>
             </div>
-
-
             {error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : (
@@ -70,9 +73,8 @@ LIMIT
               setQueryTime={setQueryTime}
               setConversionTime={setConversionTime}
             />
-
             <MapComponentsProvider>
-              <MapComponent result={result} error={error} />
+              <MapComponent ref={mapRef} result={result} error={error} />
             </MapComponentsProvider>
           </div>
         </Splitter>
