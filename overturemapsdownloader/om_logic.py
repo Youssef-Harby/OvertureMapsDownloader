@@ -7,7 +7,8 @@ from overturemapsdownloader.dask_qrys import (
 from overturemapsdownloader.utils_helper import read_geospatial_data
 
 
-def om_dask_to_parquet(config):
+def om_dask_to_parquet(config, query_url):
+    print(f"Query URL: {query_url}")
     bbox_filter = read_geospatial_data(
         config.global_variables.bbox_file_path,
         as_shapely_str=True,
@@ -15,7 +16,7 @@ def om_dask_to_parquet(config):
     )
 
     df = get_df_from_parquet(
-        parquet_path=config.format_url("Amazon_S3"),
+        parquet_path=query_url,
         # columns=get_columns_from_om_schema_yaml(schema_yaml_path),
     )
 

@@ -18,6 +18,7 @@ s3_credentials: # Optional
 urls:
   Amazon_S3: "s3://overturemaps-us-west-2/release/{release}/theme={theme}/type={ptype}/*"
   Microsoft_Azure: "https://overturemapswestus2.blob.core.windows.net/release/{release}/theme={theme}/type={ptype}/*"
+  Wherobots_S3: "s3://wherobots-public-data/overturemaps-us-west-2/release/{release}/theme={theme}/type={ptype}"
 
 themes:
   - name: "admins"

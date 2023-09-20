@@ -31,8 +31,14 @@ def omaps(
         config.update_attribute("global_variables", {"default_theme": theme})
         logging.info(f"Theme: {config.global_variables.default_theme}")
     if ptype:
-        config.update_attribute("global_variables", {"default_type": ptype})
-        logging.info(f"Parquet Type: {config.global_variables.default_type}")
+        if theme == "transportation" and ptype in ["connector", "segment"]:
+            config.update_attribute("global_variables", {"default_type": ptype})
+            query_url = config.format_url("Wherobots_S3", theme=theme, ptype=ptype)
+            logging.info(f"Parquet url: {query_url}")
+        else:
+            config.update_attribute("global_variables", {"default_type": ptype})
+            query_url = config.format_url("Amazon_S3", theme=theme, ptype=ptype)
+            logging.info(f"Parquet url: {query_url}")
     if bbox:
         config.update_attribute("global_variables", {"filter_by_bbox": True})
         config.update_attribute("global_variables", {"bbox_file_path": str(bbox)})
@@ -41,13 +47,7 @@ def omaps(
         config.update_attribute("global_variables", {"output_file_path": str(output)})
         logging.info(f"Output File: {config.global_variables.output_file_path}")
 
-    s3_url = config.format_url("Amazon_S3", theme=theme, ptype=ptype)
-    logging.info(f"Amazon S3 URL: {s3_url}")
-
-    azure_url = config.format_url("Microsoft_Azure", theme=theme, ptype=ptype)
-    logging.info(f"Microsoft Azure URL: {azure_url}")
-
-    om_dask_to_parquet(config)
+    om_dask_to_parquet(config, query_url)
 
 
 if __name__ == "__main__":
