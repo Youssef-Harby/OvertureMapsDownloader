@@ -11,7 +11,7 @@ ProgressBar().register()
 def get_df_from_parquet(
     parquet_path,
     engine="pyarrow",
-    # columns=["geometry"], / comment to get all columns by default
+    # columns=["geometry"],  # comment to get all columns by default
     storage_options={"anon": True},
     parquet_file_extensions=False,
 ):
@@ -19,9 +19,10 @@ def get_df_from_parquet(
     Reads a Dask DataFrame from a Parquet file.
     """
     try:
+        logging.info(f"Reading Parquet file from {parquet_path}")
         df = dd.read_parquet(
             parquet_path,
-            columns=columns,
+            # columns=columns,  # comment to get all columns by default
             engine=engine,
             index="id",
             dtype_backend=engine,

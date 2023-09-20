@@ -29,10 +29,13 @@ Whether you're a data scientist, a geospatial analyst, or a developer, OvertureM
     - [Data Manipulation/Downloading and Conversion](#data-manipulationdownloading-and-conversion-1)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-    - [the docker image manily contains the following tools:](#the-docker-image-manily-contains-the-following-tools)
+      - [the docker image manily contains the following tools:](#the-docker-image-manily-contains-the-following-tools)
   - [Usage](#usage)
     - [Download Geospatial Data](#download-geospatial-data)
       - [Commands](#commands)
+  - [Examples of downloading data CLI:](#examples-of-downloading-data-cli)
+    - [With Docker:](#with-docker)
+    - [Without Docker you can use the following commands with (`pip install overturemapsdownloader`):](#without-docker-you-can-use-the-following-commands-with-pip-install-overturemapsdownloader)
     - [Convert Parquet to GeoPackage](#convert-parquet-to-geopackage)
     - [Convert Parquet to MBTiles (will support tippecanoe in the future)](#convert-parquet-to-mbtiles-will-support-tippecanoe-in-the-future)
     - [Convert Parquet to ESRI File Geodatabase vector (OpenFileGDB)](#convert-parquet-to-esri-file-geodatabase-vector-openfilegdb)
@@ -111,7 +114,7 @@ docker pull ghcr.io/youssef-harby/overturemapsdownloader:latest
 3. Run the following command to download geospatial data:
 
    ```bash
-   docker run -v $(pwd):/examples --name omdownloader ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme places --ptype place --bbox /examples/bbox.geojson --output /examples/places.parquet
+   docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme places --ptype place --bbox /examples/bbox.geojson --output /examples/places.parquet
    ```
 
 #### Commands
@@ -129,6 +132,52 @@ options:
 - `--bbox PATH` Bounding box polygon in GeoJSON format as a path to a file
 - `--output PATH` Output file path (e.g., `places.parquet`)
 - `--help` Show this message and exit.
+
+## Examples of downloading data CLI:
+
+### With Docker:
+
+```bash
+# admins/locality
+docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme admins --ptype locality --bbox /examples/bbox.geojson --output /examples/locality.parquet
+
+# admins/administrativeBoundary
+docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme admins --ptype administrativeBoundary --bbox /examples/bbox.geojson --output /examples/admins.parquet
+
+# buildings/building
+docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme buildings --ptype building --bbox /examples/bbox.geojson --output /examples/building.parquet
+
+# places/place
+docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme places --ptype place --bbox /examples/bbox.geojson --output /examples/place.parquet
+
+# transportation/connector
+docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme transportation --ptype connector --bbox /examples/bbox.geojson --output /examples/connector.parquet
+
+# transportation/segment
+docker run -v $(pwd):/examples ghcr.io/youssef-harby/overturemapsdownloader:latest OMDownloader omaps --theme transportation --ptype segment --bbox /examples/bbox.geojson --output /examples/segment.parquet
+```
+
+### Without Docker you can use the following commands with (`pip install overturemapsdownloader`):
+
+```bash
+# admins/locality
+OMDownloader omaps --theme admins --ptype locality --bbox examples/bbox.geojson --output examples/locality.parquet
+
+# admins/administrativeBoundary
+OMDownloader omaps --theme admins --ptype administrativeBoundary --bbox examples/bbox.geojson --output examples/admins.parquet
+
+# buildings/building
+OMDownloader omaps --theme buildings --ptype building --bbox examples/bbox.geojson --output examples/building.parquet
+
+# places/place
+OMDownloader omaps --theme places --ptype place --bbox examples/bbox.geojson --output examples/place.parquet
+
+# transportation/connector
+OMDownloader omaps --theme transportation --ptype connector --bbox examples/bbox.geojson --output examples/connector.parquet
+
+# transportation/segment
+OMDownloader omaps --theme transportation --ptype segment --bbox examples/bbox.geojson --output examples/segment.parquet
+```
 
 ### Convert Parquet to GeoPackage
 
