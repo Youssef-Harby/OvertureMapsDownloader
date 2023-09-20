@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "overturemapsdownloader"
-version = "0.1.2"
-description = ""
+version = "0.1.4"
+description = "Overture Maps Downloader simplifies geospatial data manipulation"
 authors = ["Youssef-Harby <me@youssefharby.com>"]
 readme = "README.md"
+include = ["config.yml"]
 
 [tool.poetry.scripts]
 OMDownloader = "overturemapsdownloader.main:app"
@@ -30,7 +31,6 @@ gdal_support = ["gdal"]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-include = ["config.yml"]
 
 [virtualenvs]
 create = true
