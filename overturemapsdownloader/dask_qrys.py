@@ -11,7 +11,7 @@ ProgressBar().register()
 def get_df_from_parquet(
     parquet_path,
     engine="pyarrow",
-    columns=["geometry"],
+    # columns=["geometry"], / comment to get all columns by default
     storage_options={"anon": True},
     parquet_file_extensions=False,
 ):
