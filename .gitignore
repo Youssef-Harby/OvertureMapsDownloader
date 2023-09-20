@@ -1,6 +1,6 @@
 .ipynb_checkpoints
-dist
 __pycache__
+dist/
 .geojson
 .DS_Store
 *.gpkg
@@ -12,3 +12,4 @@ __pycache__
 *.db
 *.parquet
 .env
+node_modules/
