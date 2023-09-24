@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/osgeo/gdal:ubuntu-full-3.7.1
+      image: ghcr.io/osgeo/gdal:ubuntu-full-3.7.2
 
     env:
       POETRY_NO_INTERACTION: 1
@@ -30,7 +30,7 @@ jobs:
       - name: Install Poetry
         run: |
           echo "Installing dependencies 🕵🏻‍♂️"
-          pip install poetry==1.4.2
+          pip install poetry==1.6.1
 
       - name: Configuring PyPI
         run: |
