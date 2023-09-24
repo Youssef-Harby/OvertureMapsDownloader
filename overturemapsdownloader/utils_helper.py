@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import fiona
 from shapely import wkt, wkb
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, MultiPolygon
 import logging
 
 
@@ -92,12 +92,15 @@ def read_geospatial_data(
                 if output_format == "WKT":
                     return str(first_geom)
                 elif output_format == "Custom":
-                    if isinstance(first_geom, Polygon):
+                    if isinstance(first_geom, Polygon) or isinstance(
+                        first_geom, MultiPolygon
+                    ):
                         return first_geom
                     else:
                         logging.info(
                             f"The geometry is not a Polygon, it's a {first_geom.geom_type}"
                         )
+                        exit(1)
                         return None
                 else:
                     raise ValueError(
