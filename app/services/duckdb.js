@@ -18,6 +18,7 @@ const MANUAL_BUNDLES = {
 
 
 let conn;
+// const allBundles = duckdb.getJsDelivrBundles();
 
 export const initDatabase = async () => {
     const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);

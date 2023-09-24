@@ -245,17 +245,17 @@
   dependencies:
     react-is "^17.0.2"
 
-"@duckdb/duckdb-wasm@^1.27.1-dev118.0":
-  version "1.27.1-dev118.0"
-  resolved "https://registry.npmjs.org/@duckdb/duckdb-wasm/-/duckdb-wasm-1.27.1-dev118.0.tgz"
-  integrity sha512-YMtMHG3BVbtaU8KEoelcghB5UroMAxVxmD3m3HRxoDbUI3sWs9PIpdxkr8C9XdnXO+PWdZZZJ0EPF1aUdj0IFg==
+"@duckdb/duckdb-wasm@1.27.1-dev120.0":
+  version "1.27.1-dev120.0"
+  resolved "https://registry.yarnpkg.com/@duckdb/duckdb-wasm/-/duckdb-wasm-1.27.1-dev120.0.tgz#27ff0cffc8a2d574e271a5daac7e42f9c0ddda43"
+  integrity sha512-nGI4JDqfDAlwY/T4oQF3WfOQrefjNGmg855h3X6HqfTc4CilwnTHlpSXrhQTqKe4+tJyFnv5Zexq0qDGV5yjhQ==
   dependencies:
     apache-arrow "^13.0.0"
 
-"@duckdb/react-duckdb@^1.27.1-dev115.0":
-  version "1.27.1-dev115.0"
-  resolved "https://registry.npmjs.org/@duckdb/react-duckdb/-/react-duckdb-1.27.1-dev115.0.tgz"
-  integrity sha512-o6kQk2a+4Qn8rTfmAm6UGSNJWHTlBlXWf5FhYqd01kr6AzaHgE2ecfJrhHaoC6hbijyOW5XCkO7BrwI44rllYA==
+"@duckdb/react-duckdb@1.27.1-dev120.0":
+  version "1.27.1-dev120.0"
+  resolved "https://registry.yarnpkg.com/@duckdb/react-duckdb/-/react-duckdb-1.27.1-dev120.0.tgz#d28318967c71d594ed50238c1bd5573182fbd7f3"
+  integrity sha512-9SsgUR5BYwTlEWIFHCyKrPQ2h7QnRxAlOQkLOZxmbGEtR4/YmnyYbJ802D37hMfcY3vTKT16q46DHLsVTNeIbw==
 
 "@egjs/agent@^2.2.1":
   version "2.4.3"
@@ -2342,7 +2342,7 @@ anymatch@~3.1.2:
 
 apache-arrow@^13.0.0:
   version "13.0.0"
-  resolved "https://registry.npmjs.org/apache-arrow/-/apache-arrow-13.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/apache-arrow/-/apache-arrow-13.0.0.tgz#8c8c69ca8ec53b804b4e10fe6b57483bda46dfbd"
   integrity sha512-3gvCX0GDawWz6KFNC28p65U+zGh/LZ6ZNKWNu74N6CQlKzxeoWHpi4CgEQsgRSEMuyrIIXi1Ea2syja7dwcHvw==
   dependencies:
     "@types/command-line-args" "5.2.0"

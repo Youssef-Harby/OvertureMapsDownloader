@@ -1,11 +1,14 @@
-import { useState, useRef } from 'react';
-import DuckDBComponent from './DuckDBComponent';
-import AceEditorComponent from './AceEditorComponent';
-import Splitter, { SplitDirection } from '@devbookhq/splitter';
-import { MapComponentsProvider } from '@mapcomponents/react-maplibre';
-import MapComponent from './MapComponent';
+import { useState, useRef, useEffect } from "react";
+import DuckDBComponent from "./DuckDBComponent";
+import AceEditorComponent from "./AceEditorComponent";
+import Splitter, { SplitDirection } from "@devbookhq/splitter";
+import { MapComponentsProvider } from "@mapcomponents/react-maplibre";
+import MapComponent from "./MapComponent";
+import { DatabaseProvider } from "../context/Database";
+import { initDatabase } from "../services/duckdb";
 
 function App() {
+  const [database, setDatabase] = useState();
   const [code, setCode] = useState(`
 SELECT 
     id,
@@ -35,51 +38,75 @@ LIMIT
     mapRef.current?.resize();
   };
 
+  useEffect(() => {
+    const bootstrap = async () => {
+      const { conn, db, worker } = await initDatabase(":memory:");
+      setDatabase({ conn, db, worker });
+    };
+    bootstrap();
+  }, []);
+
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-grow overflow-y-auto">
-        <Splitter
-          direction={SplitDirection.Horizontal}
-          gutterClassName="!h-[unset] w-2 bg-gray-200 border-none min-h-screen"
-          onResizeFinished={handleResizeFinished}
-        >
-          <div className="flex flex-col h-full">
-            <AceEditorComponent initialCode={code} onCodeChange={handleCodeChange} />
-            <div className="flex items-center space-x-4 mx-4 my-4">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={handleExecuteClick}
-              >
-                Run Query
-              </button>
-              <div className='text-green-500'>
-                <p>Query Time (parquet): {queryTime ? `${queryTime.toFixed(2)} ms` : 'N/A'}</p>
-                <p>Conversion Time (GeoJSON): {conversionTime ? `${conversionTime.toFixed(2)} ms` : 'N/A'}</p>
+    <DatabaseProvider
+      value={database}
+    >
+      <div className="flex flex-col h-screen">
+        <div className="flex-grow overflow-y-auto">
+          <Splitter
+            direction={SplitDirection.Horizontal}
+            gutterClassName="!h-[unset] w-2 bg-gray-200 border-none min-h-screen"
+            onResizeFinished={handleResizeFinished}
+          >
+            <div className="flex flex-col h-full">
+              <AceEditorComponent
+                initialCode={code}
+                onCodeChange={handleCodeChange}
+              />
+              <div className="flex items-center space-x-4 mx-4 my-4">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleExecuteClick}
+                >
+                  Run Query
+                </button>
+                <div className="text-green-500">
+                  <p>
+                    Query Time (parquet):{" "}
+                    {queryTime ? `${queryTime.toFixed(2)} ms` : "N/A"}
+                  </p>
+                  <p>
+                    Conversion Time (GeoJSON):{" "}
+                    {conversionTime ? `${conversionTime.toFixed(2)} ms` : "N/A"}
+                  </p>
+                </div>
               </div>
+              {error ? (
+                <p className="text-red-500">Error: {error}</p>
+              ) : (
+                <AceEditorComponent
+                  initialCode={JSON.stringify(result, null, 2)}
+                  readOnly={true}
+                />
+              )}
             </div>
-            {error ? (
-              <p className="text-red-500">Error: {error}</p>
-            ) : (
-              <AceEditorComponent initialCode={JSON.stringify(result, null, 2)} readOnly={true} />
-            )}
-          </div>
-          <div className="h-full max-w-full w-full">
-            <DuckDBComponent
-              sqlCode={code}
-              shouldExecute={shouldExecute}
-              setShouldExecute={setShouldExecute}
-              setResult={setResult}
-              setError={setError}
-              setQueryTime={setQueryTime}
-              setConversionTime={setConversionTime}
-            />
-            <MapComponentsProvider>
-              <MapComponent ref={mapRef} result={result} error={error} />
-            </MapComponentsProvider>
-          </div>
-        </Splitter>
+            <div className="h-full max-w-full w-full">
+              <DuckDBComponent
+                sqlCode={code}
+                shouldExecute={shouldExecute}
+                setShouldExecute={setShouldExecute}
+                setResult={setResult}
+                setError={setError}
+                setQueryTime={setQueryTime}
+                setConversionTime={setConversionTime}
+              />
+              <MapComponentsProvider>
+                <MapComponent ref={mapRef} result={result} error={error} />
+              </MapComponentsProvider>
+            </div>
+          </Splitter>
+        </div>
       </div>
-    </div>
+    </DatabaseProvider>
   );
 }
 
