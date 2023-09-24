@@ -13,3 +13,7 @@ dist/
 *.parquet
 .env
 node_modules/
+*.gdbtable
+*.gdbtablx
+*.gdb/gdb
+*.gdb

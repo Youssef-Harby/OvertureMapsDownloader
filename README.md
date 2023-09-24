@@ -2,6 +2,9 @@
 
 This repository is still under heavy development. Features may change, and documentation will be updated accordingly. Use at your own risk and feel free to contribute!
 
+[![Docker build and push](https://github.com/Youssef-Harby/OvertureMapsDownloader/actions/workflows/docker-build-push.yml/badge.svg)](https://github.com/Youssef-Harby/OvertureMapsDownloader/actions/workflows/docker-build-push.yml)
+[![Deploy static content to Pages](https://github.com/Youssef-Harby/OvertureMapsDownloader/actions/workflows/deploy-react-app.yml/badge.svg)](https://github.com/Youssef-Harby/OvertureMapsDownloader/actions/workflows/deploy-react-app.yml) [![Publish Python Package](https://github.com/Youssef-Harby/OvertureMapsDownloader/actions/workflows/poetry-pypi.yml/badge.svg)](https://github.com/Youssef-Harby/OvertureMapsDownloader/actions/workflows/poetry-pypi.yml)
+
 ## Overview
 
 OvertureMapsDownloader is a monorepo that contains two main projects aimed at simplifying the process of working with Overture Maps data in Parquet format.
@@ -29,7 +32,7 @@ Whether you're a data scientist, a geospatial analyst, or a developer, OvertureM
     - [Data Manipulation/Downloading and Conversion](#data-manipulationdownloading-and-conversion-1)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-      - [the docker image manily contains the following tools:](#the-docker-image-manily-contains-the-following-tools)
+    - [the docker image manily contains the following tools:](#the-docker-image-manily-contains-the-following-tools)
   - [Usage](#usage)
     - [Download Geospatial Data](#download-geospatial-data)
       - [Commands](#commands)
@@ -42,7 +45,8 @@ Whether you're a data scientist, a geospatial analyst, or a developer, OvertureM
   - [Using Jupyter Notebooks (Data Scientists/GIS Analysts)](#using-jupyter-notebooks-data-scientistsgis-analysts)
   - [Configuration](#configuration)
   - [Roadmap](#roadmap)
-    - [DuckDB-WASM in Browser (Developers)](#duckdb-wasm-in-browser-developers-1)
+    - [DuckDB-WASM in Browser (Developers) (ReactJS)](#duckdb-wasm-in-browser-developers-reactjs)
+    - [Data Manipulation/Downloading and Conversion (Python)](#data-manipulationdownloading-and-conversion-python)
   - [Contributing](#contributing)
 
 ### DuckDB-WASM in Browser (Developers)
@@ -70,6 +74,8 @@ For developers interested in running DuckDB-WASM in the browser, the relevant co
    ```bash
    yarn dev
    ```
+
+then open http://localhost:5173/OvertureMapsDownloader in your browser
 
 ### Visual Demo
 
@@ -229,13 +235,18 @@ For advanced configurations, please refer to the `config.yml` file.
 
 ## Roadmap
 
-### DuckDB-WASM in Browser (Developers)
+### DuckDB-WASM in Browser (Developers) (ReactJS)
 
 - [ ] Add Popup on click of the feautre to show the result of the query
 - [ ] Add a button to use local parquet url instead of the remote one
 - [ ] Add a button to download the result of the query as GeoJSON..etc
+- [ ] Add a loading spinner while the query is running
 - [ ] Query by bbox drawn on the map
 - [ ] feel free to add more ...
+
+### Data Manipulation/Downloading and Conversion (Python)
+
+- [ ] Resolve JSON values to be parsed to the correct data type [OSGeo/gdal#8227](https://github.com/OSGeo/gdal/issues/8227)
 
 ## Contributing
 
