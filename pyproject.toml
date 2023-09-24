@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "overturemapsdownloader"
-version = "0.1.4"
+version = "0.1.5"
 description = "Overture Maps Downloader simplifies geospatial data manipulation"
 authors = ["Youssef-Harby <me@youssefharby.com>"]
 readme = "README.md"
