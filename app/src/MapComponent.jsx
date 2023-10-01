@@ -29,20 +29,29 @@ const MapComponent = forwardRef(({ result, error }, ref) => {
     useEffect(() => {
         if (result && result.features && result.features.length > 0) {
             const firstFeature = result.features[0];
-            const coordinatesObj = firstFeature.geometry.coordinates;
+            let coordinates = [];
 
-            // Convert the coordinates object to an array
-            const coordinates = [coordinatesObj["0"], coordinatesObj["1"]];
+            if (firstFeature.geometry.type === 'Point') {
+                coordinates = firstFeature.geometry.coordinates;
+            } else if (['LineString', 'Polygon', 'MultiPoint', 'MultiLineString', 'MultiPolygon'].includes(firstFeature.geometry.type)) {
+                // Extract the first coordinate of the first linear ring for 'Polygon' and 'MultiPolygon',
+                // or the first coordinate of the line string for 'LineString' and 'MultiLineString',
+                // or the first coordinate for 'MultiPoint'.
+                coordinates = firstFeature.geometry.coordinates.flat(2).slice(0, 2);
+            }
 
-            // Delay the flyTo operation
-            setTimeout(() => {
-                mapHook.map?.flyTo({
-                    center: coordinates,
-                    zoom: 10,
-                });
-            }, 500); // 500 milliseconds delay
+            if (coordinates.length === 2) {
+                setTimeout(() => {
+                    mapHook.map?.flyTo({
+                        center: coordinates,
+                        zoom: 16,
+                    });
+                }, 500);
+            }
         }
     }, [result, error, mapHook.map]);
+
+
 
     return (
         <>

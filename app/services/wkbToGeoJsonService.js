@@ -3,41 +3,36 @@ import { parseSync } from '@loaders.gl/core';
 
 export const convertWkbArrayToGeoJson = (wkbArray) => {
     const features = wkbArray.map((item) => {
-        // Convert the WKB geometry to a Uint8Array buffer
         const wkbBuffer = new Uint8Array(item.geometry).buffer;
-        console.log(item.geometry);
-        console.log(wkbBuffer);
-
-        // Parse the WKB buffer using @loaders.gl/wkt
         const parsedData = parseSync(wkbBuffer, WKBLoader);
+        const geometryType = parsedData.type;
 
-        // Extract the positions (coordinates) from the parsed data
-        const positions = parsedData.positions.value;
+        let coordinates = [];
 
-        // Delete the geometry field from the item object
+        if (['Point'].includes(geometryType)) {
+            coordinates = Array.from(parsedData.positions.value);
+        } else if (['Polygon', 'LineString', 'MultiLineString', 'MultiPolygon'].includes(geometryType)) {
+            const positions = parsedData.positions.value;
+
+            // Assuming positions are flat [x1, y1, x2, y2,...], group them as coordinate pairs [[x1, y1], [x2, y2],...]
+            for (let i = 0; i < positions.length; i += 2) {
+                coordinates.push([positions[i], positions[i + 1]]);
+            }
+
+            if (['Polygon', 'MultiPolygon'].includes(geometryType)) {
+                // For 'Polygon' and 'MultiPolygon', coordinates should be wrapped in an additional array to represent linear rings
+                coordinates = [coordinates];
+            }
+        }
+
         delete item.geometry;
-
-        // Create the GeoJSON geometry object
-        const geoJsonGeometry = {
-            type: 'Point', // Replace with the actual geometry type
-            coordinates: positions
-        };
-
-        // Create the properties object
-        const properties = {
-            ...item
-            // any other key-value pairs you want to add to the properties
-        };
 
         return {
             type: 'Feature',
-            properties,
-            geometry: geoJsonGeometry
+            properties: { ...item },
+            geometry: { type: geometryType, coordinates }
         };
     });
 
-    return {
-        type: 'FeatureCollection',
-        features
-    };
+    return { type: 'FeatureCollection', features };
 };
