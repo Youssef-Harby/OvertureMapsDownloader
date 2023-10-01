@@ -26,7 +26,7 @@ RUN wget https://github.com/duckdb/duckdb/releases/download/v${DUCKDB_VERSION}/d
 RUN ldconfig
 
 # Install Poetry
-RUN pip install poetry==1.4.2
+RUN pip install poetry==1.6.1
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
