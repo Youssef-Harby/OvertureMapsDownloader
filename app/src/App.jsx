@@ -15,9 +15,15 @@ SELECT
     geometry
 FROM 
     'https://data.source.coop/cholmes/overture/places-geoparquet-country/AD.parquet'
+WHERE
+    bbox.minx > 1.5862501972418102 
+AND bbox.maxx < 1.7887386087803065 
+AND bbox.miny > 42.441143243916 
+AND bbox.maxy < 42.68483211413101
 LIMIT 
-    2;
-  `);
+    100;
+
+`);
   const [queryTime, setQueryTime] = useState(null);
   const [conversionTime, setConversionTime] = useState(null);
   const [shouldExecute, setShouldExecute] = useState(false);
@@ -25,6 +31,28 @@ LIMIT
   const [error, setError] = useState(null);
 
   const mapRef = useRef(null);
+
+  const handleGetBBOXClick = () => {
+    const bbox = mapRef.current?.getBoundingBox();
+    if (bbox) {
+      const bboxFilter = `
+bbox.minx > ${bbox.minx} 
+AND bbox.maxx < ${bbox.maxx} 
+AND bbox.miny > ${bbox.miny} 
+AND bbox.maxy < ${bbox.maxy}
+`;
+
+      // Regular expression to match the --bbox placeholder or an existing BBOX filter.
+      const bboxRegex = /(--bbox|bbox\.minx\s*>\s*-?\d+(\.\d+)?\s*AND\s*bbox\.maxx\s*<\s*-?\d+(\.\d+)?\s*AND\s*bbox\.miny\s*>\s*-?\d+(\.\d+)?\s*AND\s*bbox\.maxy\s*<\s*-?\d+(\.\d+)?)/;
+
+      // Replace the --bbox placeholder or an existing BBOX filter with the new BBOX filter.
+      const newCode = code.replace(bboxRegex, bboxFilter.trim());
+
+      setCode(newCode);
+    }
+  };
+
+
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -68,6 +96,12 @@ LIMIT
                   onClick={handleExecuteClick}
                 >
                   Run Query
+                </button>
+                <button
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleGetBBOXClick}
+                >
+                  Get BBOX
                 </button>
                 <div className="text-green-500">
                   <p>

@@ -2,7 +2,7 @@ import { MapLibreMap, useMap } from '@mapcomponents/react-maplibre';
 import { MlGeoJsonLayer } from "@mapcomponents/react-maplibre";
 import { useEffect, forwardRef, useImperativeHandle } from 'react';
 
-const MapComponent = forwardRef(({ result, error }, ref) => {
+const MapComponent = forwardRef(({ result, error, onBoundingBoxChange }, ref) => {
     const mapOptions = {
         zoom: 5,
         style: "https://wms.wheregroup.com/tileserver/style/osm-bright.json",
@@ -14,8 +14,21 @@ const MapComponent = forwardRef(({ result, error }, ref) => {
     useImperativeHandle(ref, () => ({
         resize: () => {
             mapHook.map?.resize();
+        },
+        getBoundingBox: () => {
+            if (mapHook.map) {
+                const bounds = mapHook.map.getBounds();
+                return {
+                    minx: bounds.getWest(),
+                    maxx: bounds.getEast(),
+                    miny: bounds.getSouth(),
+                    maxy: bounds.getNorth(),
+                };
+            }
+            return null;
         }
     }));
+
 
     useEffect(() => {
         if (mapHook.map) {
@@ -24,7 +37,12 @@ const MapComponent = forwardRef(({ result, error }, ref) => {
                 mapHook.map.resize();
             });
         }
-    }, [mapHook.map]);
+
+        // Cleanup: remove event listener when component is unmounted or map instance changes
+        return () => {
+            mapHook.map?.off('moveend');
+        };
+    }, [mapHook.map, onBoundingBoxChange]);
 
     useEffect(() => {
         if (result && result.features && result.features.length > 0) {
@@ -50,8 +68,6 @@ const MapComponent = forwardRef(({ result, error }, ref) => {
             }
         }
     }, [result, error, mapHook.map]);
-
-
 
     return (
         <>

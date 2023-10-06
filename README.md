@@ -241,7 +241,7 @@ For advanced configurations, please refer to the `config.yml` file.
 - [ ] Add a button to use local parquet url instead of the remote one
 - [ ] Add a button to download the result of the query as GeoJSON..etc
 - [ ] Add a loading spinner while the query is running
-- [ ] Query by bbox drawn on the map
+- [x] Query by bbox drawn on the map
 - [ ] feel free to add more ...
 
 ### Data Manipulation/Downloading and Conversion (Python)
