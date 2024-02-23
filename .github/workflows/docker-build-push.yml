@@ -9,7 +9,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ghrunnenr
+    runs-on: self-hosted
 
     env:
       DOCKER_TAG: latest
