@@ -1,4 +1,4 @@
-ARG GDAL_VERSION=3.7.2
+ARG GDAL_VERSION=3.8.4
 FROM ghcr.io/osgeo/gdal:ubuntu-full-${GDAL_VERSION}
 
 LABEL maintainer="Youssef Harby <me@youssefharby.com>"
@@ -6,7 +6,7 @@ LABEL maintainer="Youssef Harby <me@youssefharby.com>"
 ARG OS_ARCH=linux \
     PLATFORM_ARCH=aarch64
 
-ENV DUCKDB_VERSION=0.8.1
+ENV DUCKDB_VERSION=0.10.0
 
 # Install dependencies
 RUN apt-get update && \

@@ -101,9 +101,9 @@ docker pull ghcr.io/youssef-harby/overturemapsdownloader:latest
 
 #### the docker image manily contains the following tools:
 
-- GDAL/OGR v3.7.2
+- GDAL/OGR v3.8.4
 - Python v3.10 (and GDAL/OGR Python bindings + duckdb python bindings)
-- DuckDB v0.8.1
+- DuckDB v0.10.0
 - Jupyter.. and more
 
 ## Usage
@@ -241,7 +241,7 @@ For advanced configurations, please refer to the `config.yml` file.
 - [ ] Add a button to use local parquet url instead of the remote one
 - [ ] Add a button to download the result of the query as GeoJSON..etc
 - [ ] Add a loading spinner while the query is running
-- [ ] Query by bbox drawn on the map
+- [x] Query by bbox drawn on the map
 - [ ] feel free to add more ...
 
 ### Data Manipulation/Downloading and Conversion (Python)
