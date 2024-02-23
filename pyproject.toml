@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "overturemapsdownloader"
-version = "0.1.6"
+version = "0.1.7"
 description = "Overture Maps Downloader simplifies geospatial data manipulation"
 authors = ["Youssef-Harby <me@youssefharby.com>"]
 readme = "README.md"
@@ -14,16 +14,16 @@ python = "^3.10"
 typer = {extras = ["all"], version = "^0.9.0"}
 jupyter = "^1.0.0"
 dask-geopandas = "^0.3.1"
-pyarrow = "^13.0.0"
-adlfs = "^2023.8.0"
-duckdb = "^0.9.0"
-geopandas = "^0.13.2"
-shapely = "^2.0.1"
-gdal = {version = "^3.7.2", optional = true}
-fiona = "^1.9.4.post1"
-fastparquet = "^2023.8.0"
-s3fs = "^2023.9.0"
-dask = {extras = ["complete"], version = "^2023.9.1"}
+pyarrow = "^15.0.0"
+adlfs = "^2024.2.0"
+duckdb = "^0.10.0"
+geopandas = "^0.14.3"
+shapely = "^2.0.3"
+gdal = {version = "^3.8.4", optional = true}
+fiona = "^1.9.5"
+fastparquet = "^2024.2.0"
+s3fs = "^2024.2.0"
+dask = {extras = ["complete"], version = "^2024.2.0"}
 
 [tool.poetry.extras]
 gdal_support = ["gdal"]

@@ -101,9 +101,9 @@ docker pull ghcr.io/youssef-harby/overturemapsdownloader:latest
 
 #### the docker image manily contains the following tools:
 
-- GDAL/OGR v3.7.2
+- GDAL/OGR v3.8.4
 - Python v3.10 (and GDAL/OGR Python bindings + duckdb python bindings)
-- DuckDB v0.8.1
+- DuckDB v0.10.0
 - Jupyter.. and more
 
 ## Usage
