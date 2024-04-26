@@ -13,7 +13,7 @@ OMDownloader = "overturemapsdownloader.main:app"
 python = "^3.10"
 typer = {extras = ["all"], version = "^0.12.3"}
 jupyter = "^1.0.0"
-dask-geopandas = { git = "https://github.com/geopandas/dask-geopandas.git", branch = "main" }
+dask-geopandas = "^0.3.1"
 pyarrow = "^15.0.2"
 adlfs = "^2024.4.0"
 duckdb = "^0.10.1"
