@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/osgeo/gdal:ubuntu-full-3.7.2
+      image: ghcr.io/osgeo/gdal:ubuntu-full-3.8.5
 
     env:
       POETRY_NO_INTERACTION: 1

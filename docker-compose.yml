@@ -8,7 +8,7 @@ services:
       args:
         - OS_ARCH=linux
         - PLATFORM_ARCH=aarch64 # amd64, i386, rpi, aarch64
-        - GDAL_VERSION=3.7.2
+        - GDAL_VERSION=3.8.5
     image: ghcr.io/youssef-harby/overturemapsdownloader:latest
     command: ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--NotebookApp.token=''", "--allow-root"]
     restart: unless-stopped
